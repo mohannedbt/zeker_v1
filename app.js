@@ -27,59 +27,10 @@ function getRandomZekrByCategory(category) {
   return filtered[Math.floor(Math.random() * filtered.length)];
 }
 
-function parseTimeToDate(timeStr) {
-  const [hour, minute] = timeStr.split(":").map(Number);
-  const now = new Date();
-  now.setHours(hour, minute, 0, 0);
-  return now;
-}
 
-function isWithinMinutes(current, prayerTime, minutes = 15) {
-  const diff = Math.abs(current - prayerTime) / 1000 / 60; // minutes difference
-  return diff <= minutes;
-}
 async function getCategoryByPrayerTimes() {
-  try {
-    const now = new Date();
 
-    const response = await axios.get(
-      `http://api.aladhan.com/v1/timings/${Math.floor(now.getTime() / 1000)}?latitude=${latitude}&longitude=${longitude}&method=2`
-    );
-
-    const timings = response.data.data.timings;
-
-    const fajr = parseTimeToDate(timings.Fajr);
-    const dhuhr = parseTimeToDate(timings.Dhuhr);
-    const asr = parseTimeToDate(timings.Asr);
-    const maghrib = parseTimeToDate(timings.Maghrib);
-    const isha = parseTimeToDate(timings.Isha);
-
-    // Near Fajr (morning adhkar)
-    if (isWithinMinutes(now, fajr, 30) || (now > fajr && now < dhuhr)) {
-      return "أذكار الصباح";
-    }
-
-    // Evening (asr to maghrib or close to maghrib/isha)
-    if (
-      (now > asr && now < maghrib) ||
-      isWithinMinutes(now, maghrib, 30) ||
-      isWithinMinutes(now, isha, 30)
-    ) {
-      return "أذكار المساء";
-    }
-
-    // Night
-    const hour = now.getHours();
-    if (now > isha || hour >= 22 || hour < 5) {
-      return "أذكار النوم";
-    }
-
-    // Fallback: use keyword "دعاء" (to be handled in the /api/zekr route)
-    return "دعاء";
-  } catch (error) {
-    console.error("⚠️ Error fetching prayer times:", error.message);
-
-    // Fallback using static time
+   
     const hour = new Date().getHours();
     if (hour >= 5 && hour < 11) return "أذكار الصباح";
     if (hour >= 17 && hour < 21) return "أذكار المساء";
@@ -88,7 +39,7 @@ async function getCategoryByPrayerTimes() {
     // Final fallback
     return "دعاء";
   }
-}
+
 
 app.get("/api/zekr", async (req, res) => {
   const category = await getCategoryByPrayerTimes();
