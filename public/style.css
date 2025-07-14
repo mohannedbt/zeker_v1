@@ -1,0 +1,53 @@
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f3f4f6;
+  direction: rtl;
+  text-align: center;
+  padding: 2rem;
+  color: #222;
+}
+
+.container {
+  max-width: 700px;
+  margin: auto;
+  background: #fff;
+  border-radius: 10px;
+  padding: 2rem;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.zekr-box {
+  margin: 1rem 0;
+}
+
+.zekr {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 1rem 0;
+  color: #0f5132;
+}
+
+.desc, .ref, .count {
+  color: #555;
+  margin: 0.5rem 0;
+}
+
+button {
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  margin: 0.5rem;
+  border: none;
+  border-radius: 5px;
+  background-color: #198754;
+  color: white;
+  cursor: pointer;
+}
+
+button:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+
+.repeats {
+  margin-top: 1rem;
+}
