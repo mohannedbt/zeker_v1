@@ -41,7 +41,14 @@ async function getCategoryByPrayerTimes() {
     // Final fallback
     return "دعاء";
   }
+app.get("/add-werd",(req,res)=>{
+  console.log("hello")
+res.sendFile(__dirname+"/public/werdPages/ManipWerd.html")  
+})
+app.get("/werd",(req,res)=>{
 
+res.sendFile(__dirname+"/public/werdPages/werdPage.html")  
+})
 
 app.get("/api/zekr", async (req, res) => {
   const category = await getCategoryByPrayerTimes();
