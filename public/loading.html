@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <title>زكرك</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Cairo', sans-serif;
+      background-color: #001f3f;
+      color: #fff;
+    }
+
+    .loader-container, .welcome-screen, .dialogue-overlay, .main-page {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      flex-direction: column;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .loader-container {
+      display: flex;
+    }
+
+    .crescent {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: #fcd34d;
+      position: relative;
+      box-shadow: 0 0 30px rgba(252, 211, 77, 0.4);
+      animation: rotateMoon 2.5s linear infinite;
+    }
+
+    .crescent::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 30px;
+      width: 100%;
+      height: 100%;
+      background: #001f3f;
+      border-radius: 50%;
+    }
+
+    .bead {
+      width: 20px;
+      height: 20px;
+      background: #10b981;
+      border-radius: 50%;
+      margin-top: 20px;
+      animation: floatBead 2s ease-in-out infinite;
+      box-shadow: 0 0 10px #10b981;
+    }
+
+    @keyframes rotateMoon {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @keyframes floatBead {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .welcome-screen h1 {
+      font-size: 32px;
+      color: #fcd34d;
+      margin-bottom: 20px;
+    }
+
+    .welcome-screen p {
+      font-size: 20px;
+      color: #eee;
+    }
+
+    .welcome-screen button {
+      margin-top: 30px;
+      padding: 10px 25px;
+      font-size: 18px;
+      background: #10b981;
+      border: none;
+      border-radius: 10px;
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .welcome-screen button:hover {
+      background: #0d8c6e;
+    }
+
+    .dialogue-overlay {
+      background: rgba(0, 0, 0, 0.4);
+      position: fixed;
+      top: 0; right: 0; bottom: 0; left: 0;
+      z-index: 10;
+    }
+
+    .dialogue-box {
+      background: #fff7e6;
+      color: #000;
+      border-radius: 20px;
+      padding: 20px;
+      max-width: 500px;
+      width: 90%;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      animation: popIn 0.3s ease-out;
+    }
+
+    .dialogue-box img.avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #fff;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .text-content {
+      flex: 1;
+    }
+
+    .text-content button {
+      background: #00a991;
+      color: white;
+      padding: 8px 20px;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    @keyframes popIn {
+      0% { transform: scale(0.6); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .main-page {
+      display: none;
+      background: #f9f9f9;
+      color: #222;
+      min-height: 100vh;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    nav {
+      background: #00a991;
+      padding: 15px;
+      color: white;
+      font-weight: bold;
+    }
+
+    main {
+      padding: 30px;
+      flex: 1;
+    }
+
+    footer {
+      background: #222;
+      color: white;
+      text-align: center;
+      padding: 15px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Loader -->
+<div class="loader-container" id="loader">
+  <div class="crescent"></div>
+  <div class="bead"></div>
+  <p style="margin-top: 20px;">تحميل ...</p>
+</div>
+
+<!-- Welcome Screen -->
+<div class="welcome-screen" id="welcome">
+  <h1>🕌 ذكرك</h1>
+  <p>عد إلى الله ولو أخطأت ألف مرة</p>
+  <button id="getStarted">ابدأ الآن</button>
+</div>
+
+<!-- Reusable Dialogue -->
+<div class="dialogue-overlay" id="dialogueBox">
+  <div class="dialogue-box">
+    <img src="" alt="Character" class="avatar" id="dialogueImg" />
+    <div class="text-content">
+      <div id="dialogueText"></div>
+      <button id="nextDialogueBtn">التالي</button>
+    </div>
+  </div>
+</div>
+
+<!-- Main Page -->
+<div class="main-page" id="mainPage">
+  <nav>زكرك - الصفحة الرئيسية</nav>
+  <main>
+    <h2>🌿 مرحبًا بك في عالم الذكر</h2>
+    <p>ابدأ رحلتك اليومية مع الأذكار والعادات الحسنة.</p>
+  </main>
+  <footer>جميع الحقوق محفوظة © ذكرك</footer>
+</div>
+
+<!-- JavaScript Logic -->
+<script>
+  // Show loader then welcome
+  setTimeout(() => {
+    document.getElementById("loader").style.display = "none";
+    document.getElementById("welcome").style.display = "flex";
+  }, 5000);
+
+  // Dialogue data array
+  const dialogues = [
+    {
+      text: `👋 مرحبًا بك في تطبيق ذكرك!<br>أنا مساعدك الشخصي وسأكون معك في رحلتك اليومية.<br>هل أنت مستعد للانطلاق؟`,
+      img : "../images.jpeg"
+    },
+    {
+      text: `🎯 رائع! حان وقت إنشاء شخصيتك الأولى.<br>اختر مظهرك وابدأ بناء عاداتك.`,
+      img : "../images.jpeg"
+    },
+    {
+      text: `🌿 تذكر: عد إلى الله ولو أخطأت ألف مرة.<br>لنبدأ رحلتك الروحية الآن.`,
+      img : "../images.jpeg"
+    }
+  ];
+
+  let dialogueIndex = 0;
+
+  // Start dialogue after welcome
+  document.getElementById("getStarted").addEventListener("click", () => {
+    document.getElementById("welcome").style.display = "none";
+    showDialogue();
+  });
+
+  // Next dialogue button
+  document.getElementById("nextDialogueBtn").addEventListener("click", () => {
+    dialogueIndex++;
+    if (dialogueIndex < dialogues.length) {
+      showDialogue();
+    } else {
+      document.getElementById("dialogueBox").style.display = "none";
+      document.getElementById("mainPage").style.display = "flex";
+    }
+  });
+
+  function showDialogue() {
+    const d = dialogues[dialogueIndex];
+    document.getElementById("dialogueText").innerHTML = d.text;
+    document.getElementById("dialogueImg").src = d.img;
+    document.getElementById("dialogueBox").style.display = "flex";
+  }
+</script>
+
+</body>
+</html>

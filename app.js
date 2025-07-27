@@ -42,14 +42,19 @@ async function getCategoryByPrayerTimes() {
     return "دعاء";
   }
 app.get("/add-werd",(req,res)=>{
-  console.log("hello")
-res.sendFile(__dirname+"/public/werdPages/ManipWerd.html")  
+res.sendFile(__dirname+"/public/werdPages/werdCreation.html")  
+})
+app.get("/manip-werd",(req,res)=>{
+res.sendFile(__dirname+"/public/werdPages/werdManagement.html")  
 })
 app.get("/werd",(req,res)=>{
 
-res.sendFile(__dirname+"/public/werdPages/werdPage.html")  
+res.sendFile(__dirname+"/public/werdPages/werdHome.html")  
 })
-
+app.post("api/werd/save",(req,res)=>{
+  console.log('data_saved');
+  res.send('OK')
+})
 app.get("/api/zekr", async (req, res) => {
   const category = await getCategoryByPrayerTimes();
   let zekr;

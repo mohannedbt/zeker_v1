@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Zeker Character Color Picker</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      padding: 2rem;
+      background-color: #f4f4f4;
+    }
+
+    .colorpicker {
+      margin: 20px auto;
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .colorchoice {
+      height: 50px;
+      width: 50px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 3px solid white;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .colorchoice:hover {
+      transform: scale(1.1);
+    }
+
+    .selected {
+      box-shadow: 0 0 12px #000;
+      border: 3px solid #000;
+    }
+
+    /* Character Design */
+    .character {
+      margin: 30px auto;
+      width: 150px;
+      height: 220px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      background-color: #fff;
+      border-radius: 20px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      padding: 10px;
+    }
+
+    .head {
+      width: 60px;
+      height: 60px;
+      background-color: #fcd5b5;
+      border-radius: 50%;
+      margin-top: 20px;
+    }
+
+    .body {
+      width: 100px;
+      height: 120px;
+      background-color: #1E90FF; /* default clothing color */
+      border-radius: 10px;
+      margin-top: 10px;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      background-color: #1E90FF;
+      color: white;
+      font-size: 16px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    button:hover {
+      background-color: #187bcd;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>✨ Pick Your Character's Color</h2>
+
+  <!-- Character -->
+  <div class="character">
+    <div class="head"></div>
+    <div class="body" id="characterBody"></div>
+  </div>
+
+  <!-- Color Picker -->
+  <div class="colorpicker"></div>
+  <button onclick="change()">Apply Color</button>
+
+  <script>
+    const brightColors = ["#FFD700", "#FF69B4", "#00CED1", "#7CFC00", "#FF4500", "#1E90FF"];
+    const colorContainer = document.querySelector(".colorpicker");
+    const bodyPart = document.getElementById("characterBody");
+    let selectedColor = null;
+
+    brightColors.forEach(colorValue => {
+      const colorDiv = document.createElement("div");
+      colorDiv.className = "colorchoice";
+      colorDiv.style.backgroundColor = colorValue;
+
+      colorDiv.addEventListener("click", function () {
+        document.querySelectorAll(".colorchoice").forEach(div => div.classList.remove("selected"));
+        colorDiv.classList.add("selected");
+        selectedColor = colorValue;
+      });
+
+      colorContainer.appendChild(colorDiv);
+    });
+
+    function change() {
+      if (selectedColor) {
+        bodyPart.style.backgroundColor = selectedColor;
+      } else {
+        alert("Please select a color first.");
+      }
+    }
+  </script>
+
+</body>
+</html>
