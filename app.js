@@ -2,7 +2,17 @@ const express = require("express");
 const fs = require("fs");
 const path = require("path");
 
+const dotenv = require('dotenv');
+const connectDB = require('./db');
+const authRoutes = require('./routes/auth');
+
+dotenv.config();
+connectDB();
 const app = express();
+
+app.use(express.json());
+app.use('/api/auth', authRoutes);
+
 const werdRoutes=require('./routes/werd');
 app.use('/',werdRoutes);
 const PORT = process.env.PORT || 3000;
@@ -67,8 +77,12 @@ app.get("/api/zekr", async (req, res) => {
 
 
 
-app.get("/", (req, res) => {
+app.get("/zeker", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
+app.get("/login", (req, res) => {
+  res.sendFile(path.join(__dirname, "public","login", "home.html"));
+});
+
 
 app.listen(PORT, () => console.log(`📿 Server running at http://localhost:${PORT}`));

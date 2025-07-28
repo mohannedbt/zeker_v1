@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>تسجيل الدخول / إنشاء حساب</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+  
+  <!-- Google Font: Cairo for Arabic style -->
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+  
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: linear-gradient(to bottom, #e6f2e6, #dff0d8);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .form-container {
+      background-color: white;
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 450px;
+    }
+    .form-title {
+      color: #2c6e49;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+    .form-switch {
+      text-align: center;
+      margin-top: 1rem;
+    }
+    .form-switch a {
+      color: #2c6e49;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .form-switch a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="form-container">
+    <h2 class="form-title" id="form-title">تسجيل الدخول</h2>
+<!-- Add this where you want to show messages -->
+<div id="message" style="color: red; margin-top: 10px;"></div>
+    <!-- Login Form -->
+    <form id="login-form">
+      <div class="mb-3">
+        <label for="login-email" class="form-label">البريد الإلكتروني</label>
+        <input type="email" class="form-control" id="login-email" required placeholder="example@email.com">
+      </div>
+      <div class="mb-3">
+        <label for="login-password" class="form-label">كلمة المرور</label>
+        <input type="password" class="form-control" id="login-password" required placeholder="********">
+      </div>
+      <button type="submit" class="btn btn-success w-100">تسجيل الدخول</button>
+    </form>
+
+    <!-- Register Form -->
+    <form id="register-form" class="d-none">
+      <div class="mb-3">
+        <label for="reg-username" class="form-label">اسم المستخدم</label>
+        <input type="text" class="form-control" id="reg-username" required placeholder="مثال: أحمد">
+      </div>
+      <div class="mb-3">
+        <label for="reg-email" class="form-label">البريد الإلكتروني</label>
+        <input type="email" class="form-control" id="reg-email" required>
+      </div>
+      <div class="mb-3">
+        <label for="reg-password" class="form-label">كلمة المرور</label>
+        <input type="password" class="form-control" id="reg-password" required>
+      </div>
+      <button type="submit" class="btn btn-primary w-100">إنشاء حساب</button>
+    </form>
+
+    <div class="form-switch">
+      <span id="toggle-text">ليس لديك حساب؟</span>
+      <a href="#" id="toggle-link">سجل الآن</a>
+    </div>
+  </div>
+
+  <!-- JavaScript to handle toggle and form -->
+  <script>
+    const loginForm = document.getElementById('login-form');
+    const registerForm = document.getElementById('register-form');
+    const toggleLink = document.getElementById('toggle-link');
+    const toggleText = document.getElementById('toggle-text');
+    const formTitle = document.getElementById('form-title');
+    const messageDiv = document.getElementById('message');
+    toggleLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      loginForm.classList.toggle('d-none');
+      registerForm.classList.toggle('d-none');
+      if (loginForm.classList.contains('d-none')) {
+        formTitle.textContent = 'إنشاء حساب';
+        toggleText.textContent = 'لديك حساب بالفعل؟';
+        toggleLink.textContent = 'تسجيل الدخول';
+      } else {
+        formTitle.textContent = 'تسجيل الدخول';
+        toggleText.textContent = 'ليس لديك حساب؟';
+        toggleLink.textContent = 'سجل الآن';
+      }
+    });
+
+   
+loginForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const email = document.getElementById('login-email').value;
+  const password = document.getElementById('login-password').value;
+
+  try {
+    const response = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+
+    const result = await response.json();
+    console.log(response.ok)
+
+    if (response.ok) {
+      messageDiv.style.color = 'green';
+      messageDiv.textContent = result.message || "Login successful!";
+      window.location.href = "/werd"; // Only on success
+    } else {
+      messageDiv.style.color = 'red';
+      messageDiv.textContent = result.message || "Login failed.";
+    }
+  } catch (err) {
+    messageDiv.style.color = 'red';
+    messageDiv.textContent = 'An error occurred';
+  }
+});
+
+registerForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const username = document.getElementById('reg-username').value;
+  const email = document.getElementById('reg-email').value;
+  const password = document.getElementById('reg-password').value;
+
+  try {
+    const response = await fetch('/api/auth/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, email, password })
+    });
+
+    const result = await response.json();
+
+    if (response.ok) {
+      messageDiv.style.color = 'green';
+      messageDiv.textContent = result.message || "Registration successful!";
+      // Optional: redirect or reset form
+    } else {
+      messageDiv.style.color = 'red';
+      messageDiv.textContent = result.message || "Registration failed.";
+    }
+  } catch (err) {
+    messageDiv.style.color = 'red';
+    messageDiv.textContent = 'An error occurred';
+  }
+});
+
+  </script>
+</body>
+</html>
