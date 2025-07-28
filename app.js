@@ -3,11 +3,13 @@ const fs = require("fs");
 const path = require("path");
 
 const app = express();
-
+const werdRoutes=require('./routes/werd');
+app.use('/',werdRoutes);
 const PORT = process.env.PORT || 3000;
 
 
 app.use(express.static("public"));
+app.use(express.json())
 
 const raw = JSON.parse(fs.readFileSync("./azkar.json", "utf8"));
 const keys = ["category", "zekr", "description", "count", "reference", "search"];
@@ -41,20 +43,7 @@ async function getCategoryByPrayerTimes() {
     // Final fallback
     return "دعاء";
   }
-app.get("/add-werd",(req,res)=>{
-res.sendFile(__dirname+"/public/werdPages/werdCreation.html")  
-})
-app.get("/manip-werd",(req,res)=>{
-res.sendFile(__dirname+"/public/werdPages/werdManagement.html")  
-})
-app.get("/werd",(req,res)=>{
 
-res.sendFile(__dirname+"/public/werdPages/werdHome.html")  
-})
-app.post("api/werd/save",(req,res)=>{
-  console.log('data_saved');
-  res.send('OK')
-})
 app.get("/api/zekr", async (req, res) => {
   const category = await getCategoryByPrayerTimes();
   let zekr;

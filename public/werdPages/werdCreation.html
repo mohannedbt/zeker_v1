@@ -414,6 +414,10 @@
     });
 
     const result = await response.json();
+    console.log("Type:", typeof result);
+console.log("Result:", result);
+console.log("Keys:", Object.keys(result));
+    console.log(result.success);
     if (result.success) {
       alert("تم حفظ وردك! 🌿");
          window.location.href="/werd";
@@ -427,9 +431,7 @@
   }
 });
 
-      alert("تم إعداد وردك بنجاح! 🌙");
-      // Simulate redirection
-      
+
    
     
   </script>
