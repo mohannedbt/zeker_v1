@@ -1,13 +1,49 @@
-# Zeker_v1 ✨
+# 🌙 Dhikr - Quran and Daily Remembrance Tracking App
 
-**Zeker_v1** is your daily companion for spiritual mindfulness — a beautiful Node.js web app that brings you authentic Islamic adhkar (supplications and remembrances) tailored to the time of day. Whether it’s morning 🌅, evening 🌇, or night 🌙, Zeker_v1 displays the perfect set of heartfelt prayers to keep your soul connected throughout the day.
+> An interactive web application to help users track their Quran reading, perform daily remembrances (Azkar), and customize an Islamic-themed personal avatar with rewards and gifts system.
 
-## Features ⭐
+---
 
-- Smartly detects the current time and serves up the right adhkar for morning, evening, or night — so you never miss a moment of remembrance. 🕰️
-- Clean, simple interface designed to let you focus on the words and meanings without distractions. 🧘‍♂️
-- Includes a rich collection of morning (أذكار الصباح) 🌞, evening (أذكار المساء) 🌆, and night (أذكار النوم) 🌌 supplications, plus general prayers (دعاء) 🙏 for any time.
-- Works smoothly even offline by relying on local time segments to guide which adhkar to show. 📴
-- Perfect for anyone wanting to build a consistent habit of daily spiritual reflection. 📿
+## 💡 About the App
 
-Zeker_v1 helps transform your daily routine into a peaceful ritual, making remembrance an easy, meaningful part of your day — all just a click away. 💫
+Dhikr is an Islamic app designed to help you:
+
+- Track your daily Quran reading progress  
+- Follow your daily Azkar with an easy and attractive interface  
+- Customize and develop your unique Islamic character (your "hero")  
+- Maintain a daily streak and receive gifts and rewards  
+- Purchase special items from an internal shop to personalize your avatar  
+- Enjoy a spiritually uplifting experience suitable for the modern Muslim  
+
+---
+
+## 🎯 Features
+
+- 📖 **Quran Reading Tracker**: Log your daily Quran reading and measure your spiritual progress  
+- 🧠 **Daily Azkar Tracker**: Keep track of your remembrance routine  
+- 🧕 **Character Customization**: Choose clothes and accessories for your Islamic avatar  
+- 🔥 **Streak System**: Stay consistent daily and earn rewards and gifts  
+- 🛍️ **Internal Shop**: Buy items to upgrade your character and spiritual journey  
+- 🕌 **Islamic Design and Atmosphere**: Simple, beautiful, and user-friendly interface  
+
+---
+
+## 🚀 Getting Started
+
+1. **Register a new account** via the signup page  
+2. **Log in** to your account  
+3. Start tracking your Quran reading and daily Azkar  
+4. Customize your avatar and enjoy the gifts and rewards system  
+
+---
+
+## 🔧 Technologies Used
+
+- **Frontend**: HTML, CSS (Bootstrap RTL), JavaScript  
+- **Backend**: Node.js, Express.js  
+- **Database**: MongoDB with Mongoose  
+- **Authentication**: JWT for secure sessions  
+- **Security**: bcrypt for password hashing  
+> note:
+> the app is **still on development**
+
